@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Claude Code
+.claude/
+
+# Large model weight files
+*.pth
+*.safetensors
+*.bin
+*.h5
+*.msgpack
