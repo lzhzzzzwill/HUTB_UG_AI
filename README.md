@@ -76,10 +76,6 @@ pip install numpy pandas -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 ### 第 4 步：在 VSCode 中打开
 
-```bash
-code /Users/linzuhong/Downloads/HUTBCourse_AI_Undergraduate-main
-```
-
 然后在 VSCode 中打开任意 `.ipynb` 文件 → 右上角选择 Kernel → **teach**。
 
 > 💡 **提示**：如果 Kernel 列表中没有 "teach"，请重启 VSCode 或在命令面板（Cmd+Shift+P）中运行 `Python: Select Interpreter` 选择 teach 环境。
