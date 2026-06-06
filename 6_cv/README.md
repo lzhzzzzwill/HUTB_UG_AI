@@ -82,3 +82,7 @@ MPS（Apple Silicon GPU）、CUDA（NVIDIA GPU）和 CPU 均可运行。无 GPU 
 - **Early Stopping**：所有 CNN 训练均配置了早停机制（验证集连续 5 个 epoch 不提升则停止），训练完成后自动恢复最佳模型参数。
 - **过拟合观察**：对比训练集和测试集的准确率曲线 -- 如果训练准确率远高于测试准确率，可能出现过拟合，这是课堂讲解的重要案例。
 - **模型保存**：CIFAR-10 和 MNIST 的 CNN 模型分别保存到 `saved_models_cifar/` 和 `saved_models_mnist/` 目录。
+- **模型应用**：可通过 `streamlit` 构建本地ui，使用外部数据集进行测试演示。
+```python
+streamlit run app.py
+```
