@@ -80,6 +80,9 @@ cd 8_nlp
 - 输入中文评论文本，实时返回情感预测结果
 - 展示 Negative / Positive 的概率分布
 - 内置多条示例文本，覆盖不同情感倾向
+```python
+streamlit run app.py
+```
 
 ## 注意事项
 
