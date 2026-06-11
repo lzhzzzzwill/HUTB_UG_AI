@@ -128,4 +128,4 @@ pip install numpy pandas -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ## 👏 共创
-欢迎各位老师同学贡献力量，期待与您的合作[email](mailto:lzhzzzzgkbs@163.com).
+欢迎各位老师同学贡献力量，期待与您的合作[📪](mailto:lzhzzzzgkbs@163.com).
