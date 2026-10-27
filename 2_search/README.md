@@ -129,3 +129,63 @@ conda activate teach
 - **拖动进度条**：快速定位到任意一步
 
 每个演示都在本地运行，动画引擎是重新实现的教学版本。更多设计说明见仓库根目录 [飞书使用指南](https://zcny2hyusvg5.feishu.cn/wiki/IbrqwAI3QieTZykBvOWcIjN6nRf)。
+
+---
+
+### frontier-bench/ — 边界台（等轴测三维实验台）
+
+**打开方式**：双击浏览器打开即可，无需联网、无需 Python。
+- `frontier-bench/frontier-bench.html` — **深色版**（默认）
+- `frontier-bench/frontier-bench-light.html` — **浅色版**（投影仪更亮）
+
+#### 为什么又做了一台？
+
+`search_animation.html` 是数据面板 + 状态动画的"抽象层面"演示；边界台把三种搜索算法的核心概念——**边界（frontier）**——呈现为一台**实验台式的机器**，让学生"看到" BFS 用队列、DFS 用栈、A* 用优先队列到底是什么意思。
+
+#### 5 个工位
+
+| 工位 | 对应 notebook 概念 | 动画里能看到什么 |
+|------|------------------|--------------|
+| 🎯 **目标针** | 目标状态 | 棋盘 1-2-3/8-0-4/7-6-5 按位插在台面上 |
+| 📊 **料台 / 探吸头** | 搜索前沿（Open List） | 探吸头从料台逐个取出状态，顶部读数格实时显示当前 g/h/f 和规则 |
+| ✂️ **切断机** | 邻居扩展 | 每取一个状态，切断机把 2-4 个邻居"切"出来放进料台 |
+| 🗃️ **料仓** | Closed / 已访问集合 | 加工过的状态落入料仓，不再被取到 |
+| 🔘 **规则旋钮** | A* / BFS / DFS | 1→A*（料台按 f 值排序）、2→BFS（FIFO 队列）、3→DFS（LIFO 栈）；可随时切换观察料台顺序变化 |
+
+#### 操作
+
+- **空格 / 按钮 / 点击**：走一步（取一个状态、扩展邻居）
+- **1 / 2 / 3**：切换规则（A* / BFS / DFS）
+- **旋钮**：鼠标悬停在右上角旋钮上可直接切换
+
+#### 重新生成
+
+```bash
+cd 2_search/frontier-bench
+node build.mjs           # frontier-bench.html（深色）
+node build.mjs --light   # frontier-bench-light.html（浅色）
+```
+
+更多设计说明见 [frontier-bench/README.md](./frontier-bench/README.md)。
+
+---
+
+## 目录结构
+
+```
+2_search/
+├── 2_teach_search.ipynb        ← 主 notebook（可解性 + BFS/DFS/A*）
+├── README.md                    ← 本文件
+├── search_animation.html        ← 交互式教学演示（面板式，含 6 主题）
+└── frontier-bench/              ← 🎨 边界台 · 等轴测三维实验台
+    ├── frontier-bench.html         （深色版）
+    ├── frontier-bench-light.html   （浅色版）
+    ├── preview-dark.png            预览截图
+    ├── preview-light.png           预览截图
+    ├── live.js                     页面交互逻辑
+    ├── model.mjs                   8 数码 + 三种边界规则模型
+    ├── geometry.mjs                零件几何定义
+    ├── build.mjs                   构建脚本
+    ├── kit/                        anatomy 等轴测工具链
+    └── README.md                   边界台详细说明
+```

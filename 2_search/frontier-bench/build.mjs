@@ -98,5 +98,5 @@ const { padSvg, rodSvg, barSvg } = (${makePieces.toString()})(k, LAYOUT);
 ${live}`,
 });
 
-writeFileSync(join(HERE, "..", theme === "light" ? "frontier-bench-light.html" : "frontier-bench.html"), page);
+writeFileSync(join(HERE, theme === "light" ? "frontier-bench-light.html" : "frontier-bench.html"), page);
 console.log("wrote", theme, JSON.stringify(stats));
