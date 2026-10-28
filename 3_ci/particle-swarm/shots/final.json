@@ -1,0 +1,8 @@
+[
+ ["wait", 2500],
+ ["eval", "(()=>{const b=document.querySelector('.iso-svg').getBBox();return JSON.stringify([b.x,b.y,b.width,b.height].map(v=>Math.round(v)));})()"],
+ ["eval", "(()=>{const r=document.querySelector('[data-readout]').getBoundingClientRect();const h=document.querySelector('[data-corner=hint]').getBoundingClientRect();const svg=document.querySelector('.iso-svg').getBoundingClientRect();return JSON.stringify({readout:[Math.round(r.left),Math.round(r.top)],hint:[Math.round(h.left),Math.round(h.top)],svg:[Math.round(svg.left),Math.round(svg.top),Math.round(svg.width),Math.round(svg.height)]});})()"],
+ ["wait", 9000],
+ ["eval", "document.querySelector('[data-readout]').textContent + ' chart ' + (document.querySelector('[data-part=chart]').getAttribute('d')||'').length + ' needle ' + (document.querySelector('[data-part=needle]').getAttribute('d')||'').length"],
+ ["eval", "(()=>{let hidden=0;document.querySelectorAll('[data-kind=puck]').forEach(el=>{if(getComputedStyle(el).opacity==='0')hidden++;});return 'hidden pucks '+hidden;})()"]
+]

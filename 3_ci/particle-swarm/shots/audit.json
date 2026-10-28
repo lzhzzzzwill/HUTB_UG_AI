@@ -1,0 +1,10 @@
+[
+ ["wait", 2500],
+ ["eval", "(()=>{const s=document.querySelector('.iso-svg');const b=s.getBBox();return JSON.stringify({bbox:[b.x,b.y,b.width,b.height].map(v=>Math.round(v)), solids:document.querySelectorAll('.iso-solid').length, lines:document.querySelectorAll('.iso-line').length, dots:document.querySelectorAll('.iso-dots circle').length});})()"],
+ ["eval", "(()=>{const r=[];document.querySelectorAll('[data-kind]').forEach(el=>{const b=el.getBoundingClientRect();r.push(el.dataset.kind+':'+Math.round(b.left)+','+Math.round(b.top)+','+Math.round(b.width)+'x'+Math.round(b.height)+' op:'+getComputedStyle(el).opacity);});return r.join(' | ');})()"],
+ ["eval", "(()=>{const p=document.querySelector('.iso-plate').getBoundingClientRect();return JSON.stringify({plate:[p.left,p.top,p.width,p.height].map(v=>Math.round(v))});})()"],
+ ["eval", "(()=>{const c=document.querySelector('[data-part=chart]');const n=document.querySelector('[data-part=needle]');return JSON.stringify({chart:(c.getAttribute('d')||'').length, needle:(n.getAttribute('d')||'').length, knob:(document.querySelector('[data-part=knob]').getAttribute('d')||'').length});})()"],
+ ["wait", 9000],
+ ["eval", "document.querySelector('[data-readout]').textContent"],
+ ["eval", "(()=>{const r=[];document.querySelectorAll('[data-kind=puck]').forEach(el=>{const b=el.getBoundingClientRect();r.push(Math.round(b.left)+','+Math.round(b.top)+' op:'+getComputedStyle(el).opacity);});return r.join(' | ');})()"]
+]

@@ -1,0 +1,18 @@
+[
+ ["wait", 1200],
+ ["eval", "document.querySelector('[data-readout]').textContent"],
+ ["wait", 3000],
+ ["eval", "document.querySelector('[data-readout]').textContent"],
+ ["shot", "shots/t3.png"],
+ ["wait", 5000],
+ ["eval", "document.querySelector('[data-readout]').textContent"],
+ ["drag", ".iso-stage", 0.2, 0.5, 0.85, 0.5, 12],
+ ["wait", 400],
+ ["eval", "document.querySelector('[data-readout]').textContent"],
+ ["key", " "],
+ ["wait", 300],
+ ["eval", "document.querySelector('[data-readout]').textContent + ' | ' + document.querySelector('.iso-stage').getAttribute('aria-valuetext')"],
+ ["wait", 12000],
+ ["eval", "document.querySelector('[data-readout]').textContent"],
+ ["shot", "shots/t20.png"]
+]

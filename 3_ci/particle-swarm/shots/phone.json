@@ -1,0 +1,1 @@
+[["wait",600],["eval","document.querySelector('[data-readout]').textContent"],["wait",2000],["eval","document.querySelector('[data-readout]').textContent"],["wait",4000],["eval","document.querySelector('[data-readout]').textContent"]]
