@@ -190,7 +190,7 @@ Alcohol, Malic acid, Ash, Alcalinity of ash, Magnesium, Total phenols, Flavanoid
 
 ## 🔧 交互式 HTML 教学演示
 
-本模块配了 **两个** 单文件、离线可用的交互式教学演示，外加一个三维 GA 育种台。
+本模块配了 **一个面板式动画 + 两台等轴测三维实验台**，全部单文件、离线、零依赖。
 
 ### ci_animation.html — 面板式动画
 
@@ -206,69 +206,88 @@ Alcohol, Malic acid, Ash, Alcalinity of ash, Magnesium, Total phenols, Flavanoid
 | **数据分布与特征** | 拓展 | Iris / Wine 散点图；可切换 PCA 投影（原始特征 PCA / PSO 选中特征 PCA） |
 | **资料与课堂讲解** | 参考资料 | 三条外部链接 + 中文概念说明 + 建议课堂演示顺序 |
 
-**可调节参数**：种群大小、变异率、交叉率、惯性 w、学习因子 c1/c2、随机种子——改完自动重算，所有数值与 notebook 一致（基于同一份 `ci_data.json`）。
+**可调节参数**：种群大小、变异率、交叉率、惯性 w、学习因子 c1/c2、随机种子——改完自动重算。
 
 ---
 
-### ga-bench/ — GA 育种台（三维等轴测实验台）
+### genetic-algorithm/ — 育种机（台式 GA 仪器）
 
 **打开方式**：
-- `ga-bench/ga-bench.html` — **浅色版**（投影仪上更亮）
-- `ga-bench/ga-bench-dark.html` — **深色版**（暗环境更清晰）
+- `genetic-algorithm/index.html` — **深色版**（默认）
+- `genetic-algorithm/index-light.html` — **浅色版**（投影仪更亮）
 
-都双击浏览器打开即可，无需联网、无需 Python、无需 Three.js。
+**为什么做了一台育种机？** `ci_animation.html` 是数据面板层面的演示；育种机把 GA 的每一步做成一台**真实可造的台式仪器**——机构本身把算法的道理讲出来。
 
-#### 为什么又做了一台 GA？
+| 算法概念 | 机器上的东西 | 动画里看到什么 |
+|---------|------------|--------------|
+| 种群（8 个体） | 条架上的 **8 根基因条** | 每根条上 8 个销钉：抬起 = 1，凹下 = 0 |
+| 适应度评估 | **测量头** + 弹簧触针 + 棘轮 + 表盘 | 触针逐个扫过销钉，每顶起一个棘轮"咔"一下，指针跳一格；8 个走完，指针读数 = 分数 |
+| 选择（保留最优） | 分数最高的两根条**留在槽里**不动 | 分数最低的两根被夹爪提起当副本 |
+| 单点交叉 | **模座** + 刀片 + **传送梭** | 模座滑到切点，一刀把两份副本同时切断；两台传送梭错开高度把尾段交叉换位 |
+| 变异 | **冲头** | 滑到被抽中的那一位，同时打掉两份副本的这一位 |
+| 收敛曲线 | **记录仪纸带** + 计数器窗口 | 每代走纸一格，笔沿横向画"本代最好分数"；最近 9 代可见，旧的向左滑出 |
+| 数字一致性 | `live.mjs` | 图上每个数（分数、切点、变异位、代数）都是页面里跑的真算法，不是摆好的 |
 
-`ci_animation.html` 是数据面板 + 函数曲面的"抽象层面"演示；GA 育种台把 GA 做 Iris 特征选择的流程呈现为一台**实验台式的育种仪**——四个核心操作（选择、交叉、变异、评价）被做成四个可以画出来的"机构"，每个工位的机械动作就是算法的一步。
+**一轮完整动作（约 11 秒）**：逐条测量 → 取出最差两条 → 复制父代 → 切断 → 交换尾段 → 压接 → 变异 → 回位 → 换行。
 
-#### 5 个工位
+**操作**：
+- **空格**：开始 / 暂停自动运行（打开后约 1 秒自动开始）
+- **← → Home End**：在 8 根条之间逐条移动 / 跳到两端
+- **悬停基因条**：机头自动走到那一条，触针当场扫一遍，表盘同步读数
+- **prefers-reduced-motion**：停在一帧诚实读数上，不自动运行
 
-| 工位 | 机器上的东西 | 对应 notebook 概念 | 动画里看到什么 |
-|------|------------|------------------|--------------|
-| 🎡 **选种转盘** | 水平圆盘 + 钢球 | 轮盘赌选择 | 扇区宽度 = 该个体适应度占总适应度的比例；钢球绕盘滚动，转盘把被抽中的扇区转到钢球下方 |
-| 📊 **种群针板** | 8 个托盘 × 4 根针 + 适应度标尺柱 | 种群 / 染色体 / 适应度 | 高针 = 1（选中该特征），低针 = 0；标尺柱高 = 该个体的 5 折准确率；最优个体的托盘描边加亮 |
-| ✂️ **交叉铡刀台** | 两条钢带 + 可移动铡刀 | 单点交叉 | 铡刀落下、两条钢带的尾段抬起互换；按交叉率决定这一组剪不剪 |
-| 📈 **记录仪纸带** | 纸带 + 龙门笔架 | 适应度进化曲线 | 每完成一代评价，笔在纸带上画出"历史最优" |
-| 🎯 **表盘** | 指针表 | 适应度函数 | 指针指向当代历史最优；刻度是 3-NN 分层五折的平均准确率 |
-
-#### 操作
-
-- **点击 / 空格**：走一步（选择 → 交叉 → 变异 → 评价中的下一个动作）
-- **R**：重置到第 0 代
-- **悬停工位**：右下角换成该工位的解释（悬停会暂停自动演示）
-- **自动讲解**：没人操作约 2 秒后自动把 6 代跑一遍，跑完停住
-
-#### 数字与 notebook 一致
-
-图上每一个数（表盘指针、纸带位置、托盘标尺）都来自同一份模型：
-
-- 数据：scikit-learn Iris（150 样本 × 4 特征），内嵌在 `ci_data.json`
-- 适应度：3-NN 分层五折平均准确率（不打乱、不标准化）
-- 算法参数：种群 8、染色体 4 位、代数 6、交叉率 0.8、变异率 0.15、种子 42
-- 历史最优从 **0.9600** 升到 **0.9733** 后不再变化（6 代 7 个点）
-
-动画回放的是真实运行的每一步：第 1 代第 1/4 组确实是个体 3×4 在第 1 位后剪断，第 1 代变异的第 1 处确实是个体 2 的第 2 位。
-
-#### 重新生成
+**重新生成**：
 
 ```bash
-cd 3_ci/ga-bench
-node build.mjs           # ga-bench.html（浅色）
-node build.mjs --dark    # ga-bench-dark.html
+cd 3_ci/genetic-algorithm
+node build.mjs           # index.html（深色）
+node build.mjs --light   # index-light.html（浅色）
 ```
 
-- `model.mjs`：数据 → 交叉验证适应度 → 带完整 trace 的 GA 运行
-- `build.mjs`：等轴测 SVG 零件 + trace 嵌进页面
-- `live.js`：按 trace 播放四个动作、重绘零件、处理交互
+详细设计说明见 [genetic-algorithm/README.md](./genetic-algorithm/README.md)。
 
-详细设计说明见 [GA育种台说明.md](./GA育种台说明.md)。
+---
+
+### particle-swarm/ — 搜索绘图台（台式 PSO 机床）
+
+**打开方式**：
+- `particle-swarm/particle-swarm.html` — **深色版**
+- `particle-swarm/particle-swarm-light.html` — **浅色版**
+
+**为什么做了一台绘图台？** PSO 的核心是"一群粒子在适应度地形上飞"——绘图台把这个场景做成一台机床：**等高线台阶 = 适应度地形，六枚磁力滑块 = 粒子，细杆小旗 = pBest，灯塔 = gBest，记录纸 = 收敛曲线**。
+
+| 算法概念 | 机器上的东西 | 动画里看到什么 |
+|---------|------------|--------------|
+| 适应度地形 | **等高线台阶**（9 层） | marching squares 生成等高线，RDP 简化；主峰在左、次峰在右前、小丘在后方 |
+| 粒子（6 枚） | 磁力滑块 | 标准全局最优 PSO：`v ← ωv + c₁r₁(p−x) + c₂r₂(g−x)`，`x ← x + v` |
+| 个体最优 pBest | 每枚滑块上的**细杆小旗** | 指向该粒子历史最佳位置 |
+| 全局最优 gBest | 场地中央的**灯塔** | 立在全群当前最优位置 |
+| 惯性权重 ω | **台面横向拖动** | 0.30 – 0.95 可调，旋钮随动 |
+| 收敛 | 灯塔连续 9 代不再移动 | 记录纸 gbest 走平 → 自动换种子重来 |
+| 读数一致性 | `model.mjs` 唯一模型 | 构建脚本和网页跑同一份代码；滑块台阶级数 = 它所在位置的适应度层 |
+
+**操作**：
+- **横向拖动**：设定惯性权重 ω
+- **点击台面 / 空格 / Enter**：重新撒点（下一组种子）
+- **← → ↑ ↓ Home End**：ω 微调 / 到两端
+- **无操作约 N 秒**：自动一轮轮跑（撒点 → 迭代 → 收敛 → 换种子）
+- **prefers-reduced-motion**：不做缓动、不自动跑，按键/点击后跳一步
+
+**重新生成**：
+
+```bash
+cd 3_ci/particle-swarm
+node build.mjs           # particle-swarm.html（深色）
+node build.mjs --light   # particle-swarm-light.html（浅色）
+```
+
+详细设计说明见 [particle-swarm/README.md](./particle-swarm/README.md)。
 
 ---
 
 ### ci_data.json — 内嵌数据集
 
-Iris（150×4+类别）和 Wine（178×13+类别）两份完整数据，被 `ci_animation.html` 和 `ga-bench/model.mjs` 直接加载。这样两个 HTML 演示都不需要联网下载 `scikit-learn` 数据集，也不需要 Python。
+Iris（150×4+类别）和 Wine（178×13+类别）两份完整数据，被 `ci_animation.html` 直接加载。这样面板式演示不需要联网下载 `scikit-learn` 数据集，也不需要 Python。
 
 ---
 
@@ -279,15 +298,26 @@ Iris（150×4+类别）和 Wine（178×13+类别）两份完整数据，被 `ci_
 ├── 3_teach_ci.ipynb        ← 主 notebook（GA + PSO）
 ├── README.md                ← 本文件
 ├── ci_data.json             ← 内嵌 Iris/Wine 数据
-├── ci_animation.html        ← 交互式教学演示（面板式）
-├── GA育种台说明.md           ← GA 育种台详细设计文档
-└── ga-bench/                ← 🎨 GA 育种台 · 三维交互实验台
-    ├── ga-bench.html            （浅色版）
-    ├── ga-bench-dark.html       （深色版）
-    ├── live.js                  页面交互逻辑
-    ├── model.mjs                数据 + GA 运行模型
+├── ci_animation.html        ← 交互式教学演示（面板式，5 主题）
+├── genetic-algorithm/       ← 🎨 育种机 · GA 等轴测三维实验台
+│   ├── index.html               （深色版，双击打开）
+│   ├── index-light.html         （浅色版）
+│   ├── build.mjs                构建脚本
+│   ├── live.mjs                 页面活体行为（真 GA 算法）
+│   ├── see.mjs                  调试：SVG → ASCII 线稿核对
+│   ├── kit/                     anatomy 等轴测工具链
+│   ├── scripts/inline-kit.mjs   工具包内联
+│   ├── shots/                   验证截图
+│   └── README.md                育种机详细设计（含 7 章）
+└── particle-swarm/          ← 🎨 搜索绘图台 · PSO 等轴测三维机床
+    ├── particle-swarm.html      （深色版）
+    ├── particle-swarm-light.html（浅色版）
+    ├── model.mjs                适应度场 + PSO（构建与网页共用）
+    ├── contour.mjs              marching squares 等高线生成
     ├── build.mjs                构建脚本
-    └── shots/                   演示截图
+    ├── kit/                     anatomy 等轴测工具链
+    ├── shots/                   验证截图（desk / light / phone / ...）
+    └── README.md                绘图台详细设计
 ```
 
 更多设计说明见仓库根目录 [飞书使用指南](https://zcny2hyusvg5.feishu.cn/wiki/IbrqwAI3QieTZykBvOWcIjN6nRf)。
